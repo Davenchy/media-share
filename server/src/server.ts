@@ -1,10 +1,13 @@
 import express from "express"
 import mongoose from "mongoose"
 import { IS_TEST, MONGO_URI, SERVER_HOST, SERVER_PORT } from "@/config"
+import api_router from "@/routes"
 
 const app = express()
 
 app.use(express.json())
+
+app.use(api_router)
 
 async function run_server() {
   try {
