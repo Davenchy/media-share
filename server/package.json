@@ -7,6 +7,10 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "nodemon",
+    "check": "biome check ./src",
+    "check:fix": "biome check --write ./src",
+    "check:ci": "biome ci ./src",
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@tsconfig/node20": "^20.1.4",
