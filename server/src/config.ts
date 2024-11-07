@@ -17,3 +17,10 @@ export const ENV = process.env.NODE_ENV || "development"
 export const IS_DEV = ENV === "development"
 export const IS_PROD = ENV === "production"
 export const IS_TEST = ENV === "test"
+
+// Logging COnfig
+export const LOG_LEVEL = process.env.LOG_LEVEL || "info"
+export const LOG_FILE = process.env.LOG_FILE || "server.log"
+export const LOG_EXCEPTIONS_FILE = process.env.LOG_FILE || "exceptions.log"
+export const LOG_ERROR_FILE = process.env.LOG_ERROR_FILE || "error.log"
+export const LOG_CONSOLE = process.env.LOG_CONSOLE !== undefined || !IS_PROD
