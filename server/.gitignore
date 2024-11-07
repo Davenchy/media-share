@@ -174,3 +174,8 @@ dist
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# Media Share
+server.log
+error.log
+exceptions.log
