@@ -13,7 +13,7 @@ export const MONGO_PORT = Number(process.env.MONGO_PORT) || 27017
 export const MONGO_URI = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
 
 // Environment Config
-export const IS_DEV = process.env.NODE_ENV === "development"
-export const IS_PROD = process.env.NODE_ENV === "production"
-export const IS_TEST = process.env.NODE_ENV === "test"
 export const ENV = process.env.NODE_ENV || "development"
+export const IS_DEV = ENV === "development"
+export const IS_PROD = ENV === "production"
+export const IS_TEST = ENV === "test"
