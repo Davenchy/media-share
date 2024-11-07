@@ -1,4 +1,3 @@
-import "express-async-errors"
 import { createLogger, format, transports } from "winston"
 import {
   LOG_CONSOLE,
