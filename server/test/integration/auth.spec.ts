@@ -1,4 +1,5 @@
 import User from "@/models/user"
+import type { UserDocument } from "@/models/user"
 import app from "@/server"
 import mongoose from "mongoose"
 import request from "supertest"
@@ -9,11 +10,13 @@ const userData = {
   password: "123456789",
 }
 
+let user: UserDocument
+
 beforeAll(async () => {
   await mongoose.connect("mongodb://localhost:27017/test")
   await mongoose.connection.db?.dropDatabase()
 
-  await new User(userData).save()
+  user = await new User(userData).save()
 })
 
 afterAll(async () => {
@@ -93,5 +96,49 @@ describe("User Login", () => {
         },
       }),
     )
+  })
+})
+
+describe("Refresh Token", () => {
+  it("should return 400 if body is invalid", async () => {
+    const res = await request(app).post("/refresh-token").send({})
+
+    expect(res.status).toBe(400)
+    expect(res.body).toMatchObject(
+      expect.objectContaining({
+        message: "invalid body",
+        errors: {
+          refreshToken: expect.any(String),
+        },
+      }),
+    )
+  })
+
+  it("should return 401 if refresh token is invalid", done => {
+    request(app)
+      .post("/refresh-token")
+      .send({ refreshToken: "132456" })
+      .expect(401, done)
+  })
+
+  it("should return 401 if user is not found", done => {
+    const user = new User(userData)
+
+    request(app)
+      .post("/refresh-token")
+      .send({ refreshToken: user.generateRefreshToken() })
+      .expect(401, done)
+  })
+
+  it("should return 200 and new tokens if token is valid", async () => {
+    const res = await request(app)
+      .post("/refresh-token")
+      .send({ refreshToken: user.generateRefreshToken() })
+
+    expect(res.status).toBe(200)
+    expect(res.body).toEqual({
+      accessToken: expect.any(String),
+      refreshToken: expect.any(String),
+    })
   })
 })
