@@ -179,3 +179,5 @@ dist
 server.log
 error.log
 exceptions.log
+
+uploads/
