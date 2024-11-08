@@ -11,8 +11,8 @@
     "check": "biome check ./src",
     "check:fix": "biome check --write ./src",
     "check:ci": "biome ci ./src",
-    "test": "jest --config jest.config.ts --coverage",
-    "test:watch": "jest --config jest.config.ts --coverage --watchAll"
+    "test": "jest --config jest.config.ts --coverage --verbose",
+    "test:watch": "jest --config jest.config.ts --coverage --verbose --watch"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
