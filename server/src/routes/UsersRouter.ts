@@ -6,8 +6,12 @@ import {
   UserCredentialsSchema,
   UserRegisterationSchema,
 } from "@/models/user"
+import { AuthGuard } from "@/middlewares/auth_guard"
 
 const router = Router()
+
+router.get("/users/me", AuthGuard, UsersController.currentUserData)
+router.get("/users/:userId", AuthGuard, UsersController.userData)
 
 router.post(
   "/register",
