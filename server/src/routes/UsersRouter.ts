@@ -9,13 +9,17 @@ import {
 
 const router = Router()
 
-router.get(
+router.post(
   "/register",
   ValidateBody(UserRegisterationSchema),
   UsersController.register,
 )
-router.get("/login", ValidateBody(UserCredentialsSchema), UsersController.login)
-router.get(
+router.post(
+  "/login",
+  ValidateBody(UserCredentialsSchema),
+  UsersController.login,
+)
+router.post(
   "/refresh-token",
   ValidateBody(RefreshTokenSchema),
   UsersController.refreshToken,
