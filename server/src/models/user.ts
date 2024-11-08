@@ -1,9 +1,14 @@
 import {
   PASSWORD_SALT_ROUNDS,
+  REFRESH_TOKEN_EXPIRES_IN,
+  REFRESH_TOKEN_SECRET,
+  TOKEN_EXPIRES_IN,
+  TOKEN_SECRET,
 } from "@/config"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 import { Schema, model } from "mongoose"
-import type { HydratedDocument } from "mongoose"
+import type { HydratedDocument, Model } from "mongoose"
 import { z } from "zod"
 
 // Types //
@@ -12,11 +17,29 @@ export type UserCredentials = z.infer<typeof UserCredentialsSchema>
 export type RefreshToken = z.infer<typeof RefreshTokenSchema>
 
 interface IUserMethods {
+  generateToken(): string
+  generateRefreshToken(): string
   validatePassword(password: string): Promise<boolean>
 }
 
 export type IUser = UserRegisteration & IUserMethods
 export type UserDocument = HydratedDocument<IUser>
+
+// biome-ignore lint/complexity/noBannedTypes:
+export interface IUserModel extends Model<IUser, {}, IUserMethods> {
+  /**
+   * Find user by access token.
+   * If no user with that token exists, returns null
+   * If a refresh token is passed, throws an error
+   * If token is invalid, throws an error
+   */
+  findByToken(token: string): Promise<UserDocument | null>
+}
+
+export interface TokenPayload {
+  id: string
+  isRefreshToken: boolean
+}
 
 // Schemas //
 export const UserCredentialsSchema = z.object({
@@ -38,7 +61,7 @@ export const RefreshTokenSchema = z.object({
   refreshToken: z.string({ message: "refresh token is required" }),
 })
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser, IUserModel, IUserMethods>(
   {
     username: { type: String, required: true, minlength: 3 },
     email: { type: String, required: true, unique: true },
@@ -54,7 +77,28 @@ const userSchema = new Schema<IUser>(
         ret
       },
     },
+    statics: {
+      async findByToken(token: string): Promise<UserDocument | null> {
+        const payload = jwt.verify(token, TOKEN_SECRET) as TokenPayload
+        if (payload.isRefreshToken) throw new Error("incorrect token")
+        return await this.findById(payload.id)
+      },
+    },
     methods: {
+      generateToken(): string {
+        return jwt.sign(
+          { id: this._id.toHexString(), isRefreshToken: false },
+          TOKEN_SECRET,
+          { expiresIn: TOKEN_EXPIRES_IN },
+        )
+      },
+      generateRefreshToken(): string {
+        return jwt.sign(
+          { id: this._id.toHexString(), isRefreshToken: true },
+          REFRESH_TOKEN_SECRET,
+          { expiresIn: REFRESH_TOKEN_EXPIRES_IN },
+        )
+      },
       async validatePassword(password: string): Promise<boolean> {
         return await bcrypt.compare(password, this.password)
       },
@@ -69,5 +113,5 @@ userSchema.pre("save", async function () {
 })
 
 // Model //
-const User = model<IUser>("User", userSchema)
+const User = model<IUser, IUserModel>("User", userSchema)
 export default User

@@ -34,3 +34,30 @@ export const LOG_CONSOLE =
 export const PASSWORD_SALT_ROUNDS =
   Number(process.env.PASSWORD_SALT_ROUNDS) || 10
 
+// JWT Config - time is in seconds //
+const tokenSecret = process.env.TOKEN_SECRET
+const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET
+
+// make sure tokens secrets are set in the production environment
+
+// the logger was imported here to ensure that LOG variables are set
+import logger from "./utils/logger"
+
+if (IS_PROD && !tokenSecret) {
+  logger.error("A strong token secret must be set in production environment")
+  process.exit(1)
+}
+
+if (IS_PROD && !refreshTokenSecret) {
+  logger.error(
+    "A strong refresh token secret must be set in production environment",
+  )
+  process.exit(1)
+}
+
+export const TOKEN_SECRET = tokenSecret || "super_strong_token_secret"
+export const REFRESH_TOKEN_SECRET =
+  refreshTokenSecret || "super_strong_refresh_token_secret"
+export const TOKEN_EXPIRES_IN = Number(process.env.TOKEN_EXPIRES_IN) || 300 // 5 minutes
+export const REFRESH_TOKEN_EXPIRES_IN =
+  Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 3600 // 1 hour
