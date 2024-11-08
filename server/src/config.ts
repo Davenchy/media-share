@@ -61,3 +61,10 @@ export const REFRESH_TOKEN_SECRET =
 export const TOKEN_EXPIRES_IN = Number(process.env.TOKEN_EXPIRES_IN) || 300 // 5 minutes
 export const REFRESH_TOKEN_EXPIRES_IN =
   Number(process.env.REFRESH_TOKEN_EXPIRES_IN) || 3600 // 1 hour
+
+// Upload Config - Size in bytes //
+export const UPLOAD_VIDEO_MAX_BYTES =
+  Number(process.env.UPLOAD_VIDEO_MAX_BYTES) || 2e7 // 20 MegaBytes
+export const UPLOAD_IMAGE_MAX_BYTES =
+  Number(process.env.UPLOAD_IMAGE_MAX_BYTES) || 1e7 // 10 MegaBytes
+export const UPLOAD_PATH = process.env.UPLOAD_PATH || "uploads"
