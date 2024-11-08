@@ -54,7 +54,8 @@ export const UserCredentialsSchema = z.object({
 export const UserRegisterationSchema = UserCredentialsSchema.extend({
   username: z
     .string({ message: "username is required" })
-    .min(3, "username must be at least 3 characters long"),
+    .min(3, "username must be at least 3 characters long")
+    .max(50, "username must be at most 50 characters long"),
 })
 
 export const RefreshTokenSchema = z.object({
@@ -63,7 +64,7 @@ export const RefreshTokenSchema = z.object({
 
 const userSchema = new Schema<IUser, IUserModel, IUserMethods>(
   {
-    username: { type: String, required: true, minlength: 3 },
+    username: { type: String, required: true, minlength: 3, maxlength: 50 },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, minlength: 8 },
   },
@@ -71,10 +72,9 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>(
     timestamps: true,
     toJSON: {
       versionKey: false,
-      transform(doc, ret) {
-        // ret.id = doc._id
-        // biome-ignore lint/performance/noDelete: <explanation>
-        ret
+      transform: (_doc, ret) => {
+        const { _id, username, email } = ret
+        return { id: _id, username, email }
       },
     },
     statics: {
