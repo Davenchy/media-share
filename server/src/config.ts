@@ -24,3 +24,8 @@ export const LOG_FILE = process.env.LOG_FILE || "server.log"
 export const LOG_EXCEPTIONS_FILE = process.env.LOG_FILE || "exceptions.log"
 export const LOG_ERROR_FILE = process.env.LOG_ERROR_FILE || "error.log"
 export const LOG_CONSOLE = process.env.LOG_CONSOLE !== undefined || !IS_PROD
+
+// Password Hasing Config //
+export const PASSWORD_SALT_ROUNDS =
+  Number(process.env.PASSWORD_SALT_ROUNDS) || 10
+

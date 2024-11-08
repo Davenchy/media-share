@@ -1,3 +1,7 @@
+import {
+  PASSWORD_SALT_ROUNDS,
+} from "@/config"
+import bcrypt from "bcrypt"
 import { Schema, model } from "mongoose"
 import type { HydratedDocument } from "mongoose"
 import { z } from "zod"
@@ -6,7 +10,12 @@ import { z } from "zod"
 export type UserRegisteration = z.infer<typeof UserRegisterationSchema>
 export type UserCredentials = z.infer<typeof UserCredentialsSchema>
 export type RefreshToken = z.infer<typeof RefreshTokenSchema>
-export type IUser = UserRegisteration
+
+interface IUserMethods {
+  validatePassword(password: string): Promise<boolean>
+}
+
+export type IUser = UserRegisteration & IUserMethods
 export type UserDocument = HydratedDocument<IUser>
 
 // Schemas //
@@ -45,8 +54,19 @@ const userSchema = new Schema<IUser>(
         ret
       },
     },
+    methods: {
+      async validatePassword(password: string): Promise<boolean> {
+        return await bcrypt.compare(password, this.password)
+      },
+    },
   },
 )
+
+// hash user's password before saving
+userSchema.pre("save", async function () {
+  const hashedPassword = await bcrypt.hash(this.password, PASSWORD_SALT_ROUNDS)
+  this.password = hashedPassword
+})
 
 // Model //
 const User = model<IUser>("User", userSchema)
