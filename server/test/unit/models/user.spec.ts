@@ -81,6 +81,36 @@ describe("User Model - findByToken", () => {
   })
 })
 
+describe("User Model - findByRefreshToken", () => {
+  it("should throw error if token is invalid", () => {
+    expect(User.findByRefreshToken("")).rejects.toThrow(JsonWebTokenError)
+  })
+
+  it("should throw error if access token is used instead of refresh token", async () => {
+    const token = user.generateToken()
+
+    expect(User.findByRefreshToken(token)).rejects.toThrow(JsonWebTokenError)
+  })
+
+  it("should throw error if user is not exist", async () => {
+    const user = new User(userData)
+    const token = user.generateRefreshToken()
+
+    const foundUser = await User.findByRefreshToken(token)
+
+    expect(foundUser).toBeNull()
+  })
+
+  it("should find user by token", async () => {
+    const token = user.generateRefreshToken()
+
+    const foundUser = await User.findByRefreshToken(token)
+
+    expect(foundUser).not.toBeNull()
+    expect(foundUser?._id.toHexString()).toBe(user._id.toHexString())
+  })
+})
+
 describe("User Model - validatePassword", () => {
   it("should be falsy if password is invalid", () => {
     expect(user.validatePassword("invalid_password")).resolves.toBeFalsy()

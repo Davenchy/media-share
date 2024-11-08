@@ -34,6 +34,14 @@ export interface IUserModel extends Model<IUser, {}, IUserMethods> {
    * If token is invalid, throws an error
    */
   findByToken(token: string): Promise<UserDocument | null>
+
+  /**
+   * Find user by refresh token.
+   * If no user with that token exists, returns null
+   * If an acccess token is passed, throws an error
+   * If token is invalid, throws an error
+   */
+  findByRefreshToken(token: string): Promise<UserDocument | null>
 }
 
 export interface TokenPayload {
@@ -81,6 +89,11 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>(
       async findByToken(token: string): Promise<UserDocument | null> {
         const payload = jwt.verify(token, TOKEN_SECRET) as TokenPayload
         if (payload.isRefreshToken) throw new Error("incorrect token")
+        return await this.findById(payload.id)
+      },
+      async findByRefreshToken(token: string): Promise<UserDocument | null> {
+        const payload = jwt.verify(token, REFRESH_TOKEN_SECRET) as TokenPayload
+        if (!payload.isRefreshToken) throw new Error("incorrect token")
         return await this.findById(payload.id)
       },
     },
