@@ -19,7 +19,21 @@ class UsersController {
     res.status(201).json(user.toJSON())
   }
 
-  login(req: Request, res: Response) {}
+  @AsyncHandler
+  async login(req: Request, res: Response) {
+    const user = await User.findOne({ email: req.body.email })
+    if (!user || !(await user.validatePassword(req.body.password))) {
+      res.status(401).json({ error: "Invalid credentials" })
+      return
+    }
+
+    const tokens = {
+      accessToken: user.generateToken(),
+      refreshToken: user.generateRefreshToken(),
+    }
+
+    res.json(tokens)
+  }
 
   refreshToken(req: Request, res: Response) {}
 }
