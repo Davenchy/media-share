@@ -1,5 +1,6 @@
 import { AsyncHandler } from "@/decorators/async_error_handler"
 import User from "@/models/user"
+import type { RefreshToken, UserCredentials, UserDocument } from "@/models/user"
 import type { Request, Response } from "express"
 
 class UsersController {
@@ -35,7 +36,25 @@ class UsersController {
     res.json(tokens)
   }
 
-  refreshToken(req: Request, res: Response) {}
+  @AsyncHandler
+  async refreshToken(req: Request, res: Response) {
+    const { refreshToken } = req.body as RefreshToken
+
+    let user: UserDocument | null
+
+    try {
+      user = await User.findByRefreshToken(refreshToken)
+      if (!user) throw new Error()
+    } catch (err) {
+      res.status(401).json({ error: "invalid or expired refresh token" })
+      return
+    }
+
+    res.json({
+      accessToken: user.generateToken(),
+      refreshToken: user.generateRefreshToken(),
+    })
+  }
 }
 
 export default new UsersController()
