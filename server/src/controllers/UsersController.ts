@@ -1,8 +1,22 @@
+import { AsyncHandler } from "@/decorators/async_error_handler"
+import User from "@/models/user"
 import type { Request, Response } from "express"
-import User from "model/user"
 
 class UsersController {
+  @AsyncHandler
   async register(req: Request, res: Response) {
+    // check if email is taken
+    let user = await User.findOne({ email: req.body.email })
+    if (user) {
+      res.status(409).json({ error: "email already in use" })
+      return
+    }
+
+    // create a new user
+    user = new User({ ...req.body })
+    await user.save()
+
+    res.status(201).json(user.toJSON())
   }
 
   login(req: Request, res: Response) {}
