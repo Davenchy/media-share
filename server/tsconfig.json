@@ -12,7 +12,8 @@
       "middleware/*": ["src/middlewares/*"]
     },
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "experimentalDecorators": true
   },
   "ts-node": {
     "require": ["tsconfig-paths/register"]

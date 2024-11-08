@@ -1,4 +1,3 @@
-import "express-async-errors"
 import logger from "@/utils/logger"
 import type { NextFunction, Request, Response } from "express"
 
@@ -12,6 +11,6 @@ export const ErrorHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
-  logger.error(err)
+  logger.error("internal server error:", err)
   res.status(500).json({ message: "internal server error" })
 }
