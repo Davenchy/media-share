@@ -5,6 +5,9 @@ type FieldErrors<T> = {
   [key in keyof T]?: string
 }
 
+/**
+ * Format zod errors to send as a response
+ */
 const formattedZodFieldErrors = <T>(error: ZodError<T>): FieldErrors<T> => {
   const fieldErrors = error.formErrors.fieldErrors
   return (Object.keys(fieldErrors) as (keyof T)[]).reduce(
@@ -16,6 +19,10 @@ const formattedZodFieldErrors = <T>(error: ZodError<T>): FieldErrors<T> => {
   )
 }
 
+/**
+ * use to validate the request's body
+ * if the body is invalid, returns status 400 with the errors formatted
+ */
 export const ValidateBody =
   (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body)

@@ -12,10 +12,16 @@ import type { HydratedDocument, Model } from "mongoose"
 import { z } from "zod"
 
 // Types //
+/** registeration route body type */
 export type UserRegisteration = z.infer<typeof UserRegisterationSchema>
+/** login route body type */
 export type UserCredentials = z.infer<typeof UserCredentialsSchema>
+/** refresh token route body type */
 export type RefreshToken = z.infer<typeof RefreshTokenSchema>
 
+/**
+ * This interface contains the definition of the User document methods
+ */
 interface IUserMethods {
   generateToken(): string
   generateRefreshToken(): string
@@ -25,6 +31,9 @@ interface IUserMethods {
 export type IUser = UserRegisteration & IUserMethods
 export type UserDocument = HydratedDocument<IUser>
 
+/**
+ * User Model Interface that contains the definition of static functions
+ */
 // biome-ignore lint/complexity/noBannedTypes:
 export interface IUserModel extends Model<IUser, {}, IUserMethods> {
   /**
@@ -44,12 +53,14 @@ export interface IUserModel extends Model<IUser, {}, IUserMethods> {
   findByRefreshToken(token: string): Promise<UserDocument | null>
 }
 
+/** the JWT token payload */
 export interface TokenPayload {
   id: string
   isRefreshToken: boolean
 }
 
 // Schemas //
+/** Used for the login route body validation */
 export const UserCredentialsSchema = z.object({
   email: z
     .string({ message: "email is required" })
@@ -59,6 +70,7 @@ export const UserCredentialsSchema = z.object({
     .min(8, "password must be at lease 8 characters long"),
 })
 
+/** Used for the register route body validation */
 export const UserRegisterationSchema = UserCredentialsSchema.extend({
   username: z
     .string({ message: "username is required" })
@@ -66,6 +78,7 @@ export const UserRegisterationSchema = UserCredentialsSchema.extend({
     .max(50, "username must be at most 50 characters long"),
 })
 
+/** Used for the refresh token route body validation */
 export const RefreshTokenSchema = z.object({
   refreshToken: z.string({ message: "refresh token is required" }),
 })
@@ -88,11 +101,15 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>(
     statics: {
       async findByToken(token: string): Promise<UserDocument | null> {
         const payload = jwt.verify(token, TOKEN_SECRET) as TokenPayload
+        // this could happen if both refresh and access token secrets are the
+        // same
         if (payload.isRefreshToken) throw new Error("incorrect token")
         return await this.findById(payload.id)
       },
       async findByRefreshToken(token: string): Promise<UserDocument | null> {
         const payload = jwt.verify(token, REFRESH_TOKEN_SECRET) as TokenPayload
+        // this could happen if both refresh and access token secrets are the
+        // same
         if (!payload.isRefreshToken) throw new Error("incorrect token")
         return await this.findById(payload.id)
       },
