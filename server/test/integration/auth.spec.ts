@@ -52,3 +52,46 @@ describe("User Registeration", () => {
     )
   })
 })
+
+describe("User Login", () => {
+  const { email, password } = userData
+  const incorrectEmail = `incorrect_${email}`
+  const incorrectPassword = `${password}123`
+
+  it("should return 400 if body is invalid", async () => {
+    const res = await request(app).post("/login").send({})
+
+    expect(res.status).toBe(400)
+    expect(res.body).toMatchObject(
+      expect.objectContaining({
+        message: "invalid body",
+        errors: {
+          email: expect.any(String),
+          password: expect.any(String),
+        },
+      }),
+    )
+  })
+
+  it.each([
+    { case: "email", email: incorrectEmail, password: incorrectPassword },
+    { case: "password", email, password: incorrectPassword },
+  ])("should return 401 if $case is incorrect", ({ email, password }, done) => {
+    request(app).post("/login").send({ email, password }).expect(401, done)
+  })
+
+  it("should return 400 if body is invalid", async () => {
+    const res = await request(app).post("/login").send({})
+
+    expect(res.status).toBe(400)
+    expect(res.body).toMatchObject(
+      expect.objectContaining({
+        message: "invalid body",
+        errors: {
+          email: expect.any(String),
+          password: expect.any(String),
+        },
+      }),
+    )
+  })
+})
