@@ -83,17 +83,17 @@ describe("User Login", () => {
     request(app).post("/login").send({ email, password }).expect(401, done)
   })
 
-  it("should return 400 if body is invalid", async () => {
-    const res = await request(app).post("/login").send({})
+  it("should return 200 with tokens if body is valid", async () => {
+    const res = await request(app).post("/login").send({
+      email: userData.email,
+      password: userData.password,
+    })
 
-    expect(res.status).toBe(400)
+    expect(res.status).toBe(200)
     expect(res.body).toMatchObject(
       expect.objectContaining({
-        message: "invalid body",
-        errors: {
-          email: expect.any(String),
-          password: expect.any(String),
-        },
+        accessToken: expect.any(String),
+        refreshToken: expect.any(String),
       }),
     )
   })
