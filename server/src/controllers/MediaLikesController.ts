@@ -37,6 +37,28 @@ class MediaController {
 
   @AsyncHandler
   async unlike(req: Request, res: Response) {
+    const { user, media, isMediaLiked, mediaLike } = req
+    if (!user) throw new Error("Use the AuthGuard")
+    if (!media) throw new Error("Use the MediaGuard")
+    if (isMediaLiked === undefined || !mediaLike)
+      throw new Error("Use the FindMediaLike")
+
+    // only unset if it is set
+    if (isMediaLiked) {
+      const session = await mongoose.startSession()
+
+      // use transaction to ensure that the like is deleted and the media likes
+      // field decremented
+      session.withTransaction(async () => {
+        media.likes--
+        await media.save()
+        await MediaLike.findByIdAndDelete(mediaLike._id)
+      })
+
+      await session.endSession()
+    }
+
+    res.json({ isLiked: false })
   }
 }
 
