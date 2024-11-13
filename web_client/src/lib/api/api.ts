@@ -12,6 +12,20 @@ export interface IUser {
   email: string
 }
 
+export interface IMedia {
+  id: string
+  filename: string
+  caption: string
+  likes: number
+  isPrivate: boolean
+  mimeType: string
+  sizeInBytes: number
+  createdAt: string
+  owner: IUser
+  isOwner: boolean
+  isLiked: boolean
+}
+
 // responses handling //
 
 // !TODO: Use better solution for handling different responses
