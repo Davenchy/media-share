@@ -4,7 +4,6 @@ import { FindMediaLike } from "middleware/find_media_like"
 
 const router = Router()
 
-router.get("/", MediaLikesController.getAllMediaLikes)
 router.post("/", FindMediaLike, MediaLikesController.like)
 router.delete("/", FindMediaLike, MediaLikesController.unlike)
 

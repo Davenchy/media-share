@@ -1,11 +1,8 @@
 import { AsyncHandler } from "@/decorators/async_error_handler"
-import MediaLike from "model/media_like"
 import type { Request, Response } from "express"
-import mongoose from "mongoose"
+import MediaLike from "model/media_like"
 
 class MediaController {
-  getAllLikes(req: Request, res: Response) {}
-
   @AsyncHandler
   async like(req: Request, res: Response) {
     const { user, media, isMediaLiked } = req
