@@ -20,7 +20,7 @@ export const MediaAcccessGuard =
       throw new Error("Use the MediaAccessGuard after the MediaGuard")
 
     const isPrivate = req.media.isPrivate
-    const isOwner = req.user._id.equals(req.media._id)
+    const isOwner = req.user._id.equals(req.media.userId)
     const onlyOwner = accessLevel === "OnlyOwner"
 
     if ((onlyOwner || isPrivate) && !isOwner) {
