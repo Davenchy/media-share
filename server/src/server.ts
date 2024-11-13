@@ -5,6 +5,7 @@ import express from "express"
 import mongoose from "mongoose"
 import { ErrorHandler, NotFoundHandler } from "./middlewares/error_handler"
 import logger from "./utils/logger"
+import { LoggerMiddleware } from "./middlewares/logger"
 
 const app = express()
 
@@ -12,6 +13,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+app.use(LoggerMiddleware)
 app.use(api_router)
 
 app.use(NotFoundHandler)
