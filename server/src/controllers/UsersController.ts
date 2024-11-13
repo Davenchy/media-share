@@ -2,7 +2,7 @@ import { AsyncHandler } from "@/decorators/async_error_handler"
 import User from "@/models/user"
 import type { RefreshToken, UserCredentials, UserDocument } from "@/models/user"
 import type { Request, Response } from "express"
-import { isValidObjectId, Types } from "mongoose"
+import { Types, isValidObjectId } from "mongoose"
 
 class UsersController {
   @AsyncHandler

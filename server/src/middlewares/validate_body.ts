@@ -1,5 +1,5 @@
-import type { Request, Response, NextFunction } from "express"
-import type { ZodSchema, ZodError } from "zod"
+import type { NextFunction, Request, Response } from "express"
+import type { ZodError, ZodSchema } from "zod"
 
 type FieldErrors<T> = {
   [key in keyof T]?: string

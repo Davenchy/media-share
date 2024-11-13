@@ -1,12 +1,12 @@
-import UsersController from "controller/UsersController"
-import { ValidateBody } from "middleware/validate_body"
-import { Router } from "express"
+import { AuthGuard } from "@/middlewares/auth_guard"
 import {
   RefreshTokenSchema,
   UserCredentialsSchema,
   UserRegisterationSchema,
 } from "@/models/user"
-import { AuthGuard } from "@/middlewares/auth_guard"
+import UsersController from "controller/UsersController"
+import { Router } from "express"
+import { ValidateBody } from "middleware/validate_body"
 
 const router = Router()
 

@@ -1,4 +1,3 @@
-import { createLogger, format, transports } from "winston"
 import {
   LOG_CONSOLE,
   LOG_ERROR_FILE,
@@ -6,6 +5,7 @@ import {
   LOG_FILE,
   LOG_LEVEL,
 } from "@/config"
+import { createLogger, format, transports } from "winston"
 
 const logger = createLogger({
   level: LOG_LEVEL,

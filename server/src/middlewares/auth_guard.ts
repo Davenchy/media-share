@@ -1,6 +1,6 @@
 import User from "@/models/user"
 import type { UserDocument } from "@/models/user"
-import type { Request, Response, NextFunction } from "express"
+import type { NextFunction, Request, Response } from "express"
 
 const setAuthHeader = (res: Response, error: string, description: string) => {
   res.header(
