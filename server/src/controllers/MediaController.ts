@@ -1,7 +1,37 @@
+import { unlink } from "node:fs/promises"
 import { resolve } from "node:path"
 import { AsyncHandler } from "@/decorators/async_error_handler"
+import type { Request, Response } from "express"
+import Media, { UpdateMediaSchema } from "model/media"
 class MediaController {
-  upload() {}
+  @AsyncHandler
+  async upload(req: Request, res: Response) {
+    const {
+      u_file: file,
+      user,
+      fields: { caption, isPrivate },
+    } = req
+
+    // !TODO: validate fields
+    // const result =   CreateMediaSchema.safeParse(fields)
+
+    if (!user) throw new Error("Use the AuthGuard middleware")
+    if (!file) throw new Error("Use the FileUpload middleware")
+
+    const media = new Media({
+      userId: user._id,
+      filename: file.originalname,
+      filePath: file.path,
+      mimeType: file.mimeType,
+      mediaType: file.mediaType,
+      sizeInBytes: file.fileSize,
+      isPrivate,
+      caption,
+    })
+
+    await media.save()
+    res.status(201).json(media.toJSON())
+  }
 
   metadata() {}
   @AsyncHandler
