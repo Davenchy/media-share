@@ -59,7 +59,7 @@ class UsersController {
   @AsyncHandler
   async currentUserData(req: Request, res: Response) {
     const user = req.user
-    if (!user) throw new Error("AuthGuard not user")
+    if (!user) throw new Error("use AuthGuard middleware first")
 
     res.json(user.toJSON())
   }
