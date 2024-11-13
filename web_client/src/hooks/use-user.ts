@@ -1,5 +1,5 @@
 import { api } from "@/lib/api/api"
-import type { IUser } from "@/lib/api/auth_api"
+import type { IUser } from "@/lib/api/api"
 import { useState, useEffect } from "react"
 
 interface UserState {
