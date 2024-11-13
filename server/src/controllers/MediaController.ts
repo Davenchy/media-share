@@ -12,9 +12,21 @@ class MediaController {
     res.send()
   }
 
+  @AsyncHandler
+  async delete(req: Request, res: Response) {
+    const media = req.media
+    if (!media) throw new Error("Use MediaGuard")
 
+    const session = await mongoose.startSession()
+    await session.withTransaction(async () => {
+      await MediaLike.deleteMany({ mediaId: media._id })
+      await unlink(media.filePath)
+      await media.deleteOne()
+    })
+    await session.endSession()
 
-  delete() {}
+    res.status(204).send()
+  }
 
   allMedia() {}
 
