@@ -25,7 +25,8 @@ RUN bun install
 COPY . .
 
 # Set vite environment variables for building run time
-ARG SERVER_HOST="localhost"
+# the server host must be the address of the backend deployment server
+ARG SERVER_HOST="143.244.179.9"
 ARG SERVER_PORT="3000"
 ENV VITE_SERVER_HOST=$SERVER_HOST
 ENV VITE_SERVER_PORT=$SERVER_PORT
@@ -40,5 +41,5 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 80
+EXPOSE 8080
 CMD [ "/usr/sbin/nginx", "-g", "daemon off;" ]
