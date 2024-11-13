@@ -17,14 +17,12 @@ interface IMedia {
 }
 
 export type MediaDocument = HydratedDocument<IMedia>
+export type UpdateMediaPayload = z.infer<typeof UpdateMediaSchema>
 
 // Schemas //
-export const CreateMediaSchema = z.object({
-  description: z
-    .string()
-    .max(300, "media description cannot exceed 300 characters")
-    .optional(),
-  isPrivate: z.boolean().optional(),
+export const UpdateMediaSchema = z.object({
+  caption: z.string().max(300, "media caption cannot exceed 300 characters"),
+  isPrivate: z.boolean(),
 })
 
 const mediaSchema = new Schema<IMedia>(
