@@ -106,7 +106,7 @@ export function MediaUploader() {
     register,
     handleSubmit,
     control,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm<IUploaderForm>()
 
   const onSubmit: SubmitHandler<IUploaderForm> = async data => {
@@ -142,11 +142,11 @@ export function MediaUploader() {
           />
           <DrawerFooter className="flex flex-row-reverse">
             <DrawerClose asChild>
-              <Button variant="outline" disabled={isLoading}>
+              <Button variant="outline" disabled={isSubmitting}>
                 Close
               </Button>
             </DrawerClose>
-            <Button type="submit" disabled={isLoading}>
+            <Button type="submit" disabled={isSubmitting}>
               Share
             </Button>
           </DrawerFooter>
