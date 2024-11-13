@@ -6,33 +6,33 @@
 
 A preview of the **login screen**, where users can login.
 
-![Login Screen Mobile View](images/Login-Mobile.png)
+<img src="images/Login-Mobile.png" alt="Login Screen Mobile View" height="400px" />
 
 ### Register Screen
 
 A preview of the **register screen**, where users can register new accounts.
 
-![Register Screen Mobile View](images/Register-Mobile.png)
+<img src="images/Register-Mobile.png" alt="Register Screen Mobile View" height="400px" />
 
 ### Content Screen
 
 A preview of the **content/home screen**, where users can view shared media,
 react with likes.
 
-![Content Screen Mobile View](images/Content-Mobile.png)
+<img src="images/Content-Mobile.png" alt="Content Screen Mobile View" height="400px" />
 
 ### Edit Media Dialog
 
 The **media edit dialog** allows users to edit their media and toggle visibility
 state.
 
-![Media Edit Dialog Mobile View](images/EditDialog-Mobile.png)
+<img src="images/EditDialog-Mobile.png" alt="Media Edit Dialog Mobile View" height="400px" />
 
 ### Upload Media Sheet
 
 The bottom **upload sheet** allows users to upload and share media.
 
-![Upload Bottom Sheet Mobile View](images/Upload-Mobile.png)
+<img src="images/Upload-Mobile.png" alt="Upload Bottom Sheet Mobile View" height="400px" />
 
 ---
 
