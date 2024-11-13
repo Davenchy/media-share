@@ -1,10 +1,11 @@
 import { Router } from "express"
-import MediaController from "controller/MediaController"
-import { MediaGuard } from "@/middlewares/media_guard"
-import { MediaAcccessGuard } from "@/middlewares/media_access_guard"
+export type { Request, Response, NextFunction } from "express"
 import { FileUpload } from "@/middlewares/file_upload"
 import { FindMediaLike } from "@/middlewares/find_media_like"
 import { MediaAcccessGuard } from "@/middlewares/media_access_guard"
+import { MediaGuard } from "@/middlewares/media_guard"
+import MediaController from "controller/MediaController"
+import MediaLikesRouter from "./MediaLikesRouter"
 import { ValidateBody } from "@/middlewares/validate_body"
 import { UpdateMediaSchema } from "@/models/media"
 
@@ -33,6 +34,13 @@ router.get(
   MediaGuard,
   MediaAcccessGuard("OnlyIfPublic"),
   MediaController.stream,
+)
+
+router.use(
+  "/:mediaId/likes",
+  MediaGuard,
+  MediaAcccessGuard("OnlyIfPublic"),
+  MediaLikesRouter,
 )
 
 export default router
