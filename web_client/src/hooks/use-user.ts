@@ -1,5 +1,6 @@
 import { api } from "@/lib/api/api"
 import type { IUser } from "@/lib/api/api"
+import { fetchUser } from "@/lib/api/auth_api"
 import { useState, useEffect } from "react"
 
 interface UserState {
@@ -18,19 +19,6 @@ let currentState: UserState = { state: "IDLE" }
 const applyChange = (newState: UserState) => {
   currentState = newState
   for (const listener of listeners) listener(newState)
-}
-
-/**
- * API endpoint to fetch the user data
- * Returns user object if succeeded
- */
-async function fetchUser(token: string): Promise<IUser> {
-  // !TODO: move to separated file
-  const res = await api.get("/users/me", {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-  if (res.status !== 200) throw new Error("Unauthorized")
-  return res.data
 }
 
 /**

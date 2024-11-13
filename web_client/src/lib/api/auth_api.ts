@@ -2,12 +2,11 @@ import {
   EmailIsTaken,
   InvalidCredentialsError,
   LoginSuccess,
-  OK,
   UnexpectedError,
   ValidationError,
   api,
 } from "./api"
-import type { APIResponse } from "./api"
+import type { APIResponse, IUser } from "./api"
 
 export const login = async (
   email: string,
@@ -15,7 +14,10 @@ export const login = async (
 ): Promise<APIResponse> =>
   api
     .post("/login", { email, password })
-    .then(async res => {
+    .then(
+      async ({ data }) => new LoginSuccess(data.accessToken, data.refreshToken),
+    )
+    .catch(({ response: res }) => {
       switch (res.status) {
         case 200:
           return new LoginSuccess(res.data.accessToken, res.data.refreshToken)
@@ -27,7 +29,6 @@ export const login = async (
           return new UnexpectedError(undefined, res.status)
       }
     })
-    .catch(err => new UnexpectedError(err, 0))
 
 export const register = async (
   username: string,
@@ -36,10 +37,9 @@ export const register = async (
 ): Promise<APIResponse> =>
   api
     .post("/register", { username, email, password })
-    .then(async res => {
+    .then(async res => res.data)
+    .catch(({ response: res }) => {
       switch (res.status) {
-        case 201:
-          return new OK()
         case 400:
           return new ValidationError(res.data.errors)
         case 401:
@@ -50,17 +50,19 @@ export const register = async (
           return new UnexpectedError()
       }
     })
-    .catch(() => new UnexpectedError())
 
 export const refresh = async (refreshToken: string): Promise<APIResponse> =>
   api
     .post("/refresh-token", { refreshToken })
-    .then(async res => {
-      switch (res.status) {
-        case 200:
-          return new LoginSuccess(res.data.accessToken, res.data.refreshToken)
-        default:
-          return new UnexpectedError()
-      }
+    .then(({ data }) => new LoginSuccess(data.accessToken, data.refreshToken))
+
+/**
+ * API endpoint to fetch the user data
+ * Returns user object if succeeded
+ */
+export const fetchUser = async (token: string): Promise<IUser> =>
+  api
+    .get("/users/me", {
+      headers: { Authorization: `Bearer ${token}` },
     })
-    .catch(() => new UnexpectedError())
+    .then(({ data }) => data)
