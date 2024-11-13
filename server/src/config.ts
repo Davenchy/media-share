@@ -23,12 +23,7 @@ export const LOG_LEVEL = process.env.LOG_LEVEL || "info"
 export const LOG_FILE = process.env.LOG_FILE || "server.log"
 export const LOG_EXCEPTIONS_FILE = process.env.LOG_FILE || "exceptions.log"
 export const LOG_ERROR_FILE = process.env.LOG_ERROR_FILE || "error.log"
-
-const logConsole = process.env.LOG_CONSOLE
-// if LOG_CONSOLE is not set, only print logs to stdout if not in production environment
-// if LOG_CONSOLE is set, always print logs to stdout if its value is `enabled`
-export const LOG_CONSOLE =
-  logConsole === undefined ? !IS_PROD : logConsole === "enabled"
+export const LOG_CONSOLE = process.env.LOG_CONSOLE !== "disabled"
 
 // Password Hasing Config //
 export const PASSWORD_SALT_ROUNDS =
