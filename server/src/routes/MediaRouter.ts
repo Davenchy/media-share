@@ -30,7 +30,7 @@ router.put(
 router.delete(
   "/:mediaId",
   MediaGuard,
-  MediaAcccessGuard("OnlyOwner"),
+  MediaAcccessGuard("OnlyOwner", "Forbidden"),
   FindMediaLike,
   MediaController.delete,
 )
