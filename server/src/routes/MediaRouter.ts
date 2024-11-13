@@ -4,6 +4,9 @@ import { MediaGuard } from "@/middlewares/media_guard"
 import { MediaAcccessGuard } from "@/middlewares/media_access_guard"
 import { FileUpload } from "@/middlewares/file_upload"
 import { FindMediaLike } from "@/middlewares/find_media_like"
+import { MediaAcccessGuard } from "@/middlewares/media_access_guard"
+import { ValidateBody } from "@/middlewares/validate_body"
+import { UpdateMediaSchema } from "@/models/media"
 
 const router = Router()
 
@@ -17,10 +20,11 @@ router.get(
   FindMediaLike,
   MediaController.metadata,
 )
-router.patch(
+router.put(
   "/:mediaId",
   MediaGuard,
-  MediaAcccessGuard("OnlyOwner"),
+  MediaAcccessGuard("OnlyOwner", "Forbidden"),
+  ValidateBody(UpdateMediaSchema),
   MediaController.update,
 )
 router.delete(
