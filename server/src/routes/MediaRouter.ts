@@ -13,6 +13,7 @@ const router = Router()
 
 router.post("/", FileUpload, MediaController.upload)
 router.get("/", MediaController.allMedia)
+router.get("/my", MediaController.myMedia)
 
 router.put(
   "/:mediaId",
