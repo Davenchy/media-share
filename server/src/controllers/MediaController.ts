@@ -1,6 +1,7 @@
 import { unlink } from "node:fs/promises"
 import { resolve } from "node:path"
 import { AsyncHandler } from "@/decorators/async_error_handler"
+import MediaLike from "@/models/media_like"
 import {
   parseRequestPaginationQueries,
   useCleanMediaFields,
@@ -11,6 +12,7 @@ import {
 import type { Request, Response } from "express"
 import Media, { UpdateMediaSchema } from "model/media"
 import mongoose from "mongoose"
+
 class MediaController {
   @AsyncHandler
   async upload(req: Request, res: Response) {
@@ -94,6 +96,34 @@ class MediaController {
     const userId = req.user._id
 
     let mediaAggregate = Media.aggregate().match({ userId })
+
+    mediaAggregate = useMediaPagination(mediaAggregate, page, limit)
+    mediaAggregate = useMediaOwner(mediaAggregate, userId)
+    mediaAggregate = useMediaLikes(mediaAggregate, userId)
+    mediaAggregate = useCleanMediaFields(mediaAggregate)
+
+    const media = await mediaAggregate.exec()
+
+    res.json(media)
+  }
+
+  @AsyncHandler
+  async likedMedia(req: Request, res: Response) {
+    if (!req.user) throw new Error("Use AuthGuard")
+
+    const { page, limit } = parseRequestPaginationQueries(req)
+    const userId = req.user._id
+
+    let mediaAggregate = MediaLike.aggregate()
+      .match({ userId })
+      .lookup({
+        from: "media",
+        localField: "mediaId",
+        foreignField: "_id",
+        as: "media",
+      })
+      .unwind("$media")
+      .replaceRoot("$media")
 
     mediaAggregate = useMediaPagination(mediaAggregate, page, limit)
     mediaAggregate = useMediaOwner(mediaAggregate, userId)
