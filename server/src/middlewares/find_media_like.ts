@@ -1,6 +1,6 @@
 import MediaLike from "@/models/media_like"
 import type { MediaLikeDocument } from "@/models/media_like"
-import type { Request, Response, NextFunction } from "express"
+import type { NextFunction, Request, Response } from "express"
 
 declare global {
   namespace Express {
@@ -43,7 +43,7 @@ export const FindMediaLike = async (
         userId: req.user._id,
         mediaId: req.media._id,
       })) ?? undefined
-    req.isMediaLiked = true
+    req.isMediaLiked = req.mediaLike !== undefined
   } catch (err) {
     req.isMediaLiked = false
   }
