@@ -2,6 +2,7 @@ import {
   EmailIsTaken,
   InvalidCredentialsError,
   LoginSuccess,
+  OK,
   UnexpectedError,
   ValidationError,
   api,
@@ -37,7 +38,7 @@ export const register = async (
 ): Promise<APIResponse> =>
   api
     .post("/register", { username, email, password })
-    .then(async res => res.data)
+    .then(async () => new OK())
     .catch(({ response: res }) => {
       switch (res.status) {
         case 400:
