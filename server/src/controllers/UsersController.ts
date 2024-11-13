@@ -26,7 +26,12 @@ class UsersController {
     const { email, password } = req.body as UserCredentials
     const user = await User.findOne({ email })
     if (!user || !(await user.validatePassword(password))) {
-      res.status(400).json({ error: "Invalid credentials" })
+      res.status(400).json({
+        errors: {
+          email: "Incorrect email address",
+          password: "Incorrect password",
+        },
+      })
       return
     }
 
