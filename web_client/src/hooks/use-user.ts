@@ -1,4 +1,3 @@
-import { api } from "@/lib/api/api"
 import type { IUser } from "@/lib/api/api"
 import { fetchUser } from "@/lib/api/auth_api"
 import { useState, useEffect } from "react"
