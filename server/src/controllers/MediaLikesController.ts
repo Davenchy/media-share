@@ -11,23 +11,8 @@ class MediaController {
     if (isMediaLiked === undefined) throw new Error("Use the FindMediaLike")
 
     // only set as liked if it is not set
-    if (!isMediaLiked) {
-      const session = await mongoose.startSession()
-
-      // use transaction to ensure that the like is created and the media likes
-      // field incremented
-      session.withTransaction(async () => {
-        await new MediaLike({
-          userId: user._id,
-          mediaId: media._id,
-        }).save()
-
-        media.likes++
-        await media.save()
-      })
-
-      await session.endSession()
-    }
+    if (!isMediaLiked)
+      await new MediaLike({ userId: user._id, mediaId: media._id }).save()
 
     res.json({ isLiked: true })
   }
@@ -41,19 +26,7 @@ class MediaController {
       throw new Error("Use the FindMediaLike")
 
     // only unset if it is set
-    if (isMediaLiked) {
-      const session = await mongoose.startSession()
-
-      // use transaction to ensure that the like is deleted and the media likes
-      // field decremented
-      session.withTransaction(async () => {
-        media.likes--
-        await media.save()
-        await MediaLike.findByIdAndDelete(mediaLike._id)
-      })
-
-      await session.endSession()
-    }
+    if (isMediaLiked) await MediaLike.findByIdAndDelete(mediaLike._id)
 
     res.json({ isLiked: false })
   }
