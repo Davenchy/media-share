@@ -8,6 +8,10 @@ You can try a live demo of the application here: [http://143.244.179.9](http://1
 
 Note: Since HTTPS certificates are not set up yet, you might need to disable HTTPS-only browsing from your browser settings to access the demo.
 
+## Screenshots
+
+To get a quick preview of the webapp's interface, including various screens, check out the [Screenshots file](images.md).
+
 ## Project Structure
 
 The project is divided into three main components:
