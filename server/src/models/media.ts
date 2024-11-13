@@ -1,18 +1,17 @@
-import { model, Schema } from "mongoose"
-import type { HydratedDocument } from "mongoose"
+import { Schema, model } from "mongoose"
+import type { HydratedDocument, Types } from "mongoose"
 import { z } from "zod"
 
 // Types //
 export type MediaType = "image" | "video"
 
 interface IMedia {
-  userId: Schema.Types.ObjectId
-  description: string
-  likes: number
-  extension: string
+  userId: Types.ObjectId
+  caption: string
+  filename: string
+  filePath: string
   mimeType: string
   sizeInBytes: number
-  filePath: string
   isPrivate: boolean
   get mediaType(): MediaType
 }
@@ -31,9 +30,8 @@ export const CreateMediaSchema = z.object({
 const mediaSchema = new Schema<IMedia>(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    description: { type: String, default: "", maxlength: 300 },
-    likes: { type: Number, min: 0, default: 0 },
-    extension: { type: String, required: true },
+    caption: { type: String, default: "", maxlength: 300 },
+    filename: { type: String, required: true },
     mimeType: { type: String, required: true },
     sizeInBytes: { type: Number, min: 0, required: true },
     filePath: { type: String, required: true },
@@ -45,7 +43,7 @@ const mediaSchema = new Schema<IMedia>(
     virtuals: {
       mediaType: {
         get(): MediaType {
-          return (this as never as IMedia).mediaType.startsWith("image")
+          return (this as never as IMedia).mimeType.startsWith("image")
             ? "image"
             : "video"
         },
