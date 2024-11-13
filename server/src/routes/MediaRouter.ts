@@ -13,13 +13,6 @@ const router = Router()
 router.post("/", FileUpload, MediaController.upload)
 router.get("/", MediaController.allMedia)
 
-router.get(
-  "/:mediaId",
-  MediaGuard,
-  MediaAcccessGuard("OnlyIfPublic"),
-  FindMediaLike,
-  MediaController.metadata,
-)
 router.put(
   "/:mediaId",
   MediaGuard,

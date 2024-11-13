@@ -33,7 +33,6 @@ class MediaController {
     res.status(201).json(media.toJSON())
   }
 
-  metadata() {}
   @AsyncHandler
   async update(req: Request, res: Response) {
     const { media, body } = req
