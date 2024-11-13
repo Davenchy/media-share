@@ -1,3 +1,4 @@
+import { resolve } from "node:path"
 import { AsyncHandler } from "@/decorators/async_error_handler"
 class MediaController {
   upload() {}
@@ -17,7 +18,12 @@ class MediaController {
 
   allMedia() {}
 
-  stream() {}
+  @AsyncHandler
+  async stream(req: Request, res: Response) {
+    const media = req.media
+    if (!media) throw new Error("Use MediaGuard")
+    res.sendFile(resolve(media.filePath))
+  }
 }
 
 export default new MediaController()
