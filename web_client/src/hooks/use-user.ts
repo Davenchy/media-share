@@ -17,8 +17,7 @@ let currentState: UserState = { state: "IDLE" }
  */
 const applyChange = (newState: UserState) => {
   currentState = newState
-  // biome-ignore lint/complexity/noForEach:
-  listeners.forEach(setter => setter(currentState))
+  for (const listener of listeners) listener(newState)
 }
 
 /**
