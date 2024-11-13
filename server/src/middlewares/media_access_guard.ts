@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express"
 
 export type MediaAccessLevel = "OnlyOwner" | "OnlyIfPublic"
+export type RejectMessage = "NotFound" | "Forbidden"
 
 /**
  * Express middleware that checks if the user is authorized to access this
@@ -10,9 +11,12 @@ export type MediaAccessLevel = "OnlyOwner" | "OnlyIfPublic"
  * If the media is private or only owners are allowed, then it will block.
  *
  * block if -> (onlyOwner || isPrivate) && !isOwner
+ *
+ * On rejection/AccessDenied: it will return a 404 if rejectMessage is set to
+ * `NotFound` and 403 if set to `Forbidden`.
  */
 export const MediaAcccessGuard =
-  (accessLevel: MediaAccessLevel) =>
+  (accessLevel: MediaAccessLevel, rejectMessage: RejectMessage = "NotFound") =>
   (req: Request, res: Response, next: NextFunction) => {
     if (!req.user)
       throw new Error("Use the MediaAccessGuard after the AuthGuard")
@@ -24,7 +28,10 @@ export const MediaAcccessGuard =
     const onlyOwner = accessLevel === "OnlyOwner"
 
     if ((onlyOwner || isPrivate) && !isOwner) {
-      res.status(404).json({ error: "Media not found" })
+      const status = rejectMessage === "NotFound" ? 404 : 403
+      const error =
+        rejectMessage === "NotFound" ? "Media not found" : "Access denied"
+      res.status(status).json({ error })
       return
     }
 
