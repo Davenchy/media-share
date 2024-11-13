@@ -21,5 +21,5 @@ export const ErrorHandler = (
   _next: NextFunction,
 ) => {
   logger.error("internal server error:", err)
-  res.status(500).json({ message: "internal server error" })
+  res.status(500).json({ error: "internal server error" })
 }
