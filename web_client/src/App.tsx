@@ -1,6 +1,8 @@
+import { Button } from "./components/ui/button"
 import { Toaster } from "./components/ui/toaster"
 import { useUser } from "./hooks/use-user"
 import { AuthView } from "./views/AuthView"
+import { ContentView } from "./views/ContentView"
 function App() {
   const { isLoggedIn, isLoggedOut, isChecking, restoreSession, state } =
     useUser()
@@ -22,6 +24,12 @@ function App() {
   }
 
   if (isLoggedIn) {
+    return (
+      <>
+        <ContentView />
+        <Toaster />
+      </>
+    )
   }
 
   if (isLoggedOut)
