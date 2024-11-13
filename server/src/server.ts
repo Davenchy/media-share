@@ -4,8 +4,8 @@ import cors from "cors"
 import express from "express"
 import mongoose from "mongoose"
 import { ErrorHandler, NotFoundHandler } from "./middlewares/error_handler"
-import logger from "./utils/logger"
 import { LoggerMiddleware } from "./middlewares/logger"
+import logger from "./utils/logger"
 
 const app = express()
 

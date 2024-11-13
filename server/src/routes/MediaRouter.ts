@@ -4,10 +4,10 @@ import { FileUpload } from "@/middlewares/file_upload"
 import { FindMediaLike } from "@/middlewares/find_media_like"
 import { MediaAcccessGuard } from "@/middlewares/media_access_guard"
 import { MediaGuard } from "@/middlewares/media_guard"
-import MediaController from "controller/MediaController"
-import MediaLikesRouter from "./MediaLikesRouter"
 import { ValidateBody } from "@/middlewares/validate_body"
 import { UpdateMediaSchema } from "@/models/media"
+import MediaController from "controller/MediaController"
+import MediaLikesRouter from "./MediaLikesRouter"
 
 const router = Router()
 
