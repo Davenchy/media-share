@@ -1,4 +1,6 @@
+import { Toaster } from "./components/ui/toaster"
 import { useUser } from "./hooks/use-user"
+import { AuthView } from "./views/AuthView"
 function App() {
   const { isLoggedIn, isLoggedOut, isChecking, restoreSession, state } =
     useUser()
@@ -20,6 +22,15 @@ function App() {
   }
 
   if (isLoggedIn) {
+  }
+
+  if (isLoggedOut)
+    return (
+      <>
+        <Toaster />
+        <AuthView />
+      </>
+    )
 
   const removeLocalStorage = () => {
     localStorage.clear()
