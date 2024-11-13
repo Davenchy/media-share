@@ -1,3 +1,5 @@
+import { LoginForm } from "@/components/auth_forms/LoginForm"
+import { RegisterForm } from "@/components/auth_forms/RegisterForm"
 import { useState } from "react"
 
 export function AuthView() {
