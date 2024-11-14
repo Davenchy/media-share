@@ -2,9 +2,11 @@
 
 ## Overview
 
-**MediaShare WebApp** is a front-end application for the **MediaShare** backend, built using **React.js** and **Vite**. The webapp provides an intuitive user interface for media management, including media uploads, likes, and viewing both public and private media.
+**MediaShare WebApp** is a front-end application for the **MediaShare** backend, built using **React.js** and **Vite**. The web app provides an intuitive user interface for media management, including media uploads, likes, and viewing both public and private media.
 
-It uses modern web technologies to offer a fast and responsive experience, with a focus on clean and reusable components powered by **TailwindCSS** and **Shadcn**.
+To keep the media feed updated in real-time, the web app leverages **Server-Sent Events (SSE)**. Upon login, the app connects to the server’s `/events` endpoint to receive notifications of changes, such as media uploads, updates, deletions, and interactions. This real-time functionality enables seamless and dynamic user experiences, ensuring users see the latest content without manual refreshing.
+
+The interface is built with **TailwindCSS** and **Shadcn** to provide a fast and responsive experience focused on clean, reusable components.
 
 ## Architecture
 

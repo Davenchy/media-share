@@ -4,6 +4,8 @@
 
 **MediaShare** is a media-sharing platform backend that allows users to upload, manage, and interact with media content like images and videos. The application supports user authentication, media management (upload, update, delete), and media interaction (likes). The backend is written in **TypeScript** and designed with scalability and modularity in mind.
 
+In addition to media management, the server provides **real-time notifications** using **Server-Sent Events (SSE)**. Clients connected to the `/events` endpoint receive refresh events whenever a user triggers an update, such as a new upload, edit, delete, or like/unlike action. To optimize performance, these notifications are **debounced for 2 seconds** to handle frequent updates efficiently.
+
 ## Architecture
 
 - **Backend (Server)**: A RESTful API written in TypeScript, powered by Node.js and Express.
@@ -20,6 +22,21 @@
 - Media interaction through likes (like and unlike).
 - Media streaming (currently limited, does not support range headers).
 - Authenticated access to all endpoints.
+- Real-Time Updates with SSE.
+
+### Server-Sent Events (SSE) for Real-Time Notifications
+
+The backend for MediaShare supports real-time updates through **Server-Sent Events (SSE)**, providing users with instant notifications of changes in the media feed. This feature is implemented at the `/events` endpoint, which is **protected by authentication**.
+
+- **Endpoint**: `GET /events`
+  - Requires an `Authorization` header with a valid Bearer token.
+  - Only users other than the triggering user will receive the event notification, ensuring efficient updates.
+  - Actions triggering an event include media uploads, updates, deletions, likes, and unlikes.
+- **Debounced Updates**: Event notifications are **debounced for 2 seconds**, preventing server overload during frequent interactions.
+
+#### How to Enable SSE
+
+The server sends SSE events to connected clients whenever a change is detected. To listen for these updates, clients must establish a connection to `/events` with a valid auth token. The server will keep the connection open, sending updates as new events occur.
 
 ## Setup Instructions
 
@@ -240,6 +257,45 @@ Also, you could compile to JavaScript and run it locally:
 - **Description**: Unlikes a media item.
 - **Response**:
   - `200 OK` on success.
+
+### Real-Time Updates Routes (Requires Authentication)
+
+#### GET `/events`
+
+- **Description**: Notifies the client of media updates.
+- **Response**:
+  - `200 OK` on success.
+
+##### Client Example Using Axios
+
+```ts
+async function serverSentEvents(
+  token: string,
+  abortSignal: GenericAbortSignal,
+  onEvent: () => void,
+) =>
+  api
+    .get("/events", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "text/event-stream",
+      },
+      responseType: "stream",
+      adapter: "fetch",
+      signal: abortSignal,
+    })
+    .then(async (res) => {
+      console.log("connected to events channel");
+      const stream = res.data as ReadableStream;
+      const reader = stream.getReader();
+
+      while (true) {
+        const { done } = await reader.read();
+        if (done) break;
+        onEvent();
+      }
+    })
+```
 
 ## Testing
 

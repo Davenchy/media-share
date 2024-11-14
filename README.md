@@ -1,6 +1,10 @@
 # MediaShare
 
+### Repo README
+
 **MediaShare** is a full-stack web application that allows users to upload, manage, and share media (images/videos). It includes a backend built with TypeScript, a web frontend built with React, and uses Docker to manage the services. The application supports basic user authentication, media upload (images/videos), and media interaction (like/unlike).
+
+To enhance user experience, MediaShare features **real-time notifications** using **Server-Sent Events (SSE)**. When a user performs an action such as uploading, updating, or deleting media, or interacting via likes, other users receive a live refresh event, prompting them to refetch the updated media. This functionality ensures users always see the latest content without needing to manually reload.
 
 ## Live Demo
 
@@ -11,6 +15,17 @@ Note: Since HTTPS certificates are not set up yet, you might need to disable HTT
 ## Screenshots
 
 To get a quick preview of the webapp's interface, including various screens, check out the [Screenshots file](images.md).
+
+## Real-Time Updates with Server-Sent Events (SSE)
+
+MediaShare utilizes **Server-Sent Events (SSE)** to provide real-time updates to users. When any user action (such as media upload, update, deletion, like, or unlike) occurs, other users listening to the events will receive a **refresh notification** to refetch the latest media. Key points:
+
+- SSE is integrated into the backend at the `/events` endpoint, which is **auth-guarded**.
+- Each client subscribes to `/events` upon login to receive updates.
+- The triggering user does not receive the event themselves, ensuring efficient data handling.
+- The events system is **debounced with a 2-second delay** to reduce server load from frequent updates.
+
+For detailed instructions on enabling SSE in the backend and frontend, refer to the respective `README` files.
 
 ## Project Structure
 
