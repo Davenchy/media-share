@@ -1,12 +1,15 @@
+import type { AxiosProgressEvent, GenericAbortSignal } from "axios"
 import { api } from "./api"
 import { OK, UnexpectedError, ValidationError } from "./api"
 import type { APIResponse, IMedia } from "./api"
 
-export const upload = async (
+export const uploadMedia = async (
   token: string,
   media: File,
   caption?: string,
   isPrivate?: boolean,
+  abortSignal?: GenericAbortSignal,
+  progress?: (ev: AxiosProgressEvent) => void,
 ): Promise<IMedia> => {
   const formData = new FormData()
 
@@ -19,6 +22,8 @@ export const upload = async (
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      onUploadProgress: progress,
+      signal: abortSignal,
     })
     .then(res => {
       if (res.status === 201) return res.data
