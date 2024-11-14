@@ -1,8 +1,21 @@
 import { MediaUploader } from "./components/media/MediaUploader"
 import { Toaster } from "./components/ui/toaster"
+import { useSSE } from "./hooks/use-sse"
 import { useUser } from "./hooks/use-user"
 import { AuthView } from "./views/AuthView"
 import { ContentView } from "./views/ContentView"
+
+function LoggedInView() {
+  useSSE()
+
+  return (
+    <>
+      <ContentView />
+      <MediaUploader />
+      <Toaster />
+    </>
+  )
+}
 
 function App() {
   const { isLoggedIn, isChecking, restoreSession, state } = useUser()
@@ -23,15 +36,7 @@ function App() {
     )
   }
 
-  if (isLoggedIn) {
-    return (
-      <>
-        <ContentView />
-        <MediaUploader />
-        <Toaster />
-      </>
-    )
-  }
+  if (isLoggedIn) return <LoggedInView />
 
   return (
     <>
