@@ -9,10 +9,10 @@ import {
   useMediaOwner,
   useMediaPagination,
 } from "@/utils/media_helpers"
+import serverSentEvents from "@/utils/server-sent-events"
 import type { Request, Response } from "express"
 import Media, { UpdateMediaSchema } from "model/media"
 import mongoose from "mongoose"
-import serverSentEvents from "@/utils/server-sent-events"
 
 class MediaController {
   @AsyncHandler

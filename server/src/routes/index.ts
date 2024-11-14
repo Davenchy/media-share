@@ -1,9 +1,9 @@
 import { AuthGuard } from "@/middlewares/auth_guard"
+import logger from "@/utils/logger"
+import serverSentEvents from "@/utils/server-sent-events"
 import { Router } from "express"
 import MediaRouter from "./MediaRouter"
 import UsersRouter from "./UsersRouter"
-import serverSentEvents from "@/utils/server-sent-events"
-import logger from "@/utils/logger"
 
 const router = Router()
 
