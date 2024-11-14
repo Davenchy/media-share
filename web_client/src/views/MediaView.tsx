@@ -1,5 +1,5 @@
 import { MediaCard } from "@/components/MediaCard"
-import { MediaImage } from "@/components/MediaImage"
+import { MediaSource } from "@/components/MediaSource"
 import { useUser } from "@/hooks/use-user"
 import type { IMedia } from "@/lib/api/api"
 import { useQuery } from "@tanstack/react-query"
@@ -29,7 +29,9 @@ export function MediaView({ endpoint }: { endpoint: MediaEndpoint }) {
     <div className="overflow-y-auto space-y-4 h-full">
       {data.map((media: IMedia) => (
         <MediaCard key={media.id} media={media}>
-          <MediaImage mediaId={media.id} alt={media.caption || ""} />
+          <MediaSource mediaId={media.id}>
+            {src => <img src={src} alt="testing" />}
+          </MediaSource>
         </MediaCard>
       ))}
     </div>
