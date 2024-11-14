@@ -5,21 +5,34 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const likesCountFilter = (likes: number): string => {
-  const units = ["", "K", "M", "P"]
-  let currentValue = likes
+export const unitFormatter = (
+  units: string[],
+  steps: number,
+  valueFilter: (value: number) => string,
+  value: number,
+): string => {
+  let current = value
+  let index = 0
 
-  const val = () =>
-    currentValue % 1 === 0 ? currentValue : currentValue.toFixed(1)
+  for (index = 0; index < units.length; index++)
+    if (current >= steps) current /= steps
+    else break
 
-  for (let i = 0; i < units.length; i++) {
-    if (currentValue >= 1000) {
-      currentValue /= 1000
-      continue
-    }
-
-    return `${val()}${units[i]}`
-  }
-
-  return `${val()}${units[units.length - 1]}`
+  return `${valueFilter(current)} ${units[index]}`
 }
+
+export const likesFormat = (likes: number) =>
+  unitFormatter(
+    ["", "K", "M", "P"],
+    1000,
+    n => n.toFixed(n % 1 === 0 ? 0 : 1),
+    likes,
+  )
+
+export const sizeFormat = (bytes: number) =>
+  unitFormatter(
+    ["Bytes", "KB", "MB", "GB", "TB"],
+    1024,
+    n => n.toFixed(1),
+    bytes,
+  )

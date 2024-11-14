@@ -1,8 +1,8 @@
 import { useToast } from "@/hooks/use-toast"
 import { useUser } from "@/hooks/use-user"
-import * as MediaAPI from "@/lib/api/media_api"
 import type { IMedia } from "@/lib/api/api"
-import { likesCountFilter } from "@/lib/utils"
+import * as MediaAPI from "@/lib/api/media_api"
+import { likesFormat } from "@/lib/utils"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { EllipsisVertical, LockKeyhole, Pencil, Trash2 } from "lucide-react"
 import {
@@ -13,17 +13,17 @@ import {
   CardHeader,
   CardTitle,
 } from "ui/card"
-import { MediaEditDialog } from "../EditMediaDialog"
 import { LikeButton } from "../LikeButton"
 import { UserAvatar } from "../UserAvatar"
 import { Button } from "../ui/button"
+import { DialogTrigger } from "../ui/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
-import { DialogTrigger } from "../ui/dialog"
+import { MediaEditDialog } from "./EditMediaDialog"
 
 function MediaCardActionsMenu({ media }: { media: IMedia }) {
   const { token } = useUser()
@@ -104,7 +104,7 @@ export function MediaCard({
       </CardHeader>
       <CardContent className="px-0">{children}</CardContent>
       <CardFooter className="space-x-2 flex flex-row-reverse">
-        <p>{likesCountFilter(media.likes)}</p>
+        <p>{likesFormat(media.likes)}</p>
         <LikeButton isLiked={media.isLiked} onClick={onLike} />
       </CardFooter>
     </Card>
