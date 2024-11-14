@@ -23,11 +23,11 @@ import { Label } from "../ui/label"
 import { Switch } from "../ui/switch"
 import { Textarea } from "../ui/textarea"
 
-import * as MediaAPI from "@/lib/api/media_api"
+import { useToast } from "@/hooks/use-toast"
+import { useUpload } from "@/hooks/use-upload"
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { useToast } from "@/hooks/use-toast"
-import { useUser } from "@/hooks/use-user"
+import { UploaderMetrices } from "./UploaderMetrices"
 
 interface IUploaderForm {
   media: File[]
@@ -98,9 +98,9 @@ function MediaUploaderContent({
 }
 
 export function MediaUploader() {
-  const [isOpen, setIsOpen] = useState(false)
-  const { token } = useUser()
+  const { upload, isUploading } = useUpload()
   const { toast } = useToast()
+  const [isOpen, setIsOpen] = useState(false)
   const queryClient = useQueryClient()
   const {
     register,
@@ -109,18 +109,21 @@ export function MediaUploader() {
     formState: { errors, isSubmitting },
   } = useForm<IUploaderForm>()
 
-  const onSubmit: SubmitHandler<IUploaderForm> = async data => {
-    const files = data.media as File[]
-    await MediaAPI.upload(token, files[0] as File, data.caption, data.isPrivate)
-    setIsOpen(false)
-    queryClient.refetchQueries({ queryKey: ["media"] })
-    toast({
-      description: "Media uploaded successfully",
-      title: "Success",
-      variant: "success",
-      duration: 2000,
+  const onSubmit: SubmitHandler<IUploaderForm> = data =>
+    upload({
+      media: (data.media as File[])[0],
+      caption: data.caption,
+      isPrivate: data.isPrivate,
+    }).then(() => {
+      setIsOpen(false)
+      queryClient.refetchQueries({ queryKey: ["media"] })
+      toast({
+        description: "Media uploaded successfully",
+        title: "Success",
+        variant: "success",
+        duration: 2000,
+      })
     })
-  }
 
   return (
     <Drawer open={isOpen} onOpenChange={setIsOpen}>
@@ -140,16 +143,19 @@ export function MediaUploader() {
             errors={errors}
             control={control}
           />
-          <DrawerFooter className="flex flex-row-reverse">
-            <DrawerClose asChild>
-              <Button variant="outline" disabled={isSubmitting}>
-                Close
+          <UploaderMetrices />
+          {!isUploading && (
+            <DrawerFooter className="flex flex-row-reverse">
+              <DrawerClose asChild>
+                <Button variant="outline" disabled={isSubmitting}>
+                  Close
+                </Button>
+              </DrawerClose>
+              <Button type="submit" disabled={isSubmitting}>
+                Share
               </Button>
-            </DrawerClose>
-            <Button type="submit" disabled={isSubmitting}>
-              Share
-            </Button>
-          </DrawerFooter>
+            </DrawerFooter>
+          )}
         </form>
       </DrawerContent>
     </Drawer>
