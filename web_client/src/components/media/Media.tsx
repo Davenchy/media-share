@@ -3,12 +3,12 @@ export function Media({ src, mimeType }: { src: string; mimeType: string }) {
   const isVideo = mimeType.startsWith("video")
 
   if (isImage) {
-    return <img src={src} alt="testing" />
+    return <img src={src} alt="media" className="w-full h-full " />
   }
 
   if (isVideo) {
     // biome-ignore lint/a11y/useMediaCaption:
-    return <video src={src} controls />
+    return <video src={src} controls className="w-full h-full" />
   }
 
   return (

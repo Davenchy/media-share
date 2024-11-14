@@ -102,7 +102,9 @@ export function MediaCard({
           <CardDescription className="pt-4">{media.caption}</CardDescription>
         )}
       </CardHeader>
-      <CardContent className="px-0">{children}</CardContent>
+      <CardContent className="px-0 h-[280px] sm:h-[400px] w-full overflow-hidden">
+        {children}
+      </CardContent>
       <CardFooter className="space-x-2 flex flex-row-reverse">
         <p>{likesFormat(media.likes)}</p>
         <LikeButton isLiked={media.isLiked} onClick={onLike} />
