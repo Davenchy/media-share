@@ -13,6 +13,7 @@ The webapp is structured to interact with the **MediaShare** backend API, allowi
 - Register and log in.
 - Upload and manage images/videos.
 - Like media content and view personal or public media.
+- Real-Time Updates with SSE.
 
 The app is built using the following tools and packages:
 
@@ -154,6 +155,17 @@ This webapp communicates with the **MediaShare Backend** API, which is described
 - **Media Upload**: Users can upload images (JPEG, PNG formats) and videos (MP4) to the backend.
 - **Media Viewing**: Users can view their own media, liked media, and public media from other users.
 - **Media Likes**: Users can like and unlike media content.
+- **Real-Time Updates**: Allows users to get live updates.
+
+### Real-Time Updates with SSE
+
+The MediaShare web app leverages **Server-Sent Events (SSE)** to provide real-time media feed updates. Once a user logs in, the app automatically connects to the server’s `/events` endpoint to receive live notifications whenever there is a change in the media collection.
+
+- **Automatic Refresh**: When a user action (upload, update, delete, like, or unlike) occurs, the app will refresh the media feed, updating only when other users perform actions.
+- **Connection Setup**: Upon login, the app establishes a connection to `/events` and begins listening for events.
+- **Efficient Load Handling**: Updates are debounced for 2 seconds on the server to prevent excessive reloading during frequent actions.
+
+**Note**: If the user’s access token expires, the SSE connection will need to be re-established after re-authentication. The app automatically handles reconnection when needed.
 
 ## Additional Notes
 
