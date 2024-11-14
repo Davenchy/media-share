@@ -13,17 +13,17 @@ import {
   CardHeader,
   CardTitle,
 } from "ui/card"
-import { MediaEditDialog } from "./EditMediaDialog"
-import { LikeButton } from "./LikeButton"
-import { UserAvatar } from "./UserAvatar"
-import { Button } from "./ui/button"
+import { MediaEditDialog } from "../EditMediaDialog"
+import { LikeButton } from "../LikeButton"
+import { UserAvatar } from "../UserAvatar"
+import { Button } from "../ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu"
-import { DialogTrigger } from "./ui/dialog"
+} from "../ui/dropdown-menu"
+import { DialogTrigger } from "../ui/dialog"
 
 function MediaCardActionsMenu({ media }: { media: IMedia }) {
   const { token } = useUser()
