@@ -6,8 +6,8 @@ import type {
   SubmitHandler,
   UseFormRegister,
 } from "react-hook-form"
-import { FieldErrorView } from "./FieldErrorView"
-import { Button } from "./ui/button"
+import { FieldErrorView } from "../FieldErrorView"
+import { Button } from "ui/button"
 import {
   Dialog,
   DialogContent,
@@ -15,10 +15,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog"
-import { Label } from "./ui/label"
-import { Switch } from "./ui/switch"
-import { Textarea } from "./ui/textarea"
+} from "ui/dialog"
+import { Label } from "ui/label"
+import { Switch } from "ui/switch"
+import { Textarea } from "ui/textarea"
 import { useUser } from "@/hooks/use-user"
 import { useQueryClient } from "@tanstack/react-query"
 import { useToast } from "@/hooks/use-toast"
