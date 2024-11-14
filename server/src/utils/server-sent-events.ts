@@ -1,6 +1,7 @@
-type Listener = (userId: string) => void
+type Listener = () => void
 
 class ServerSentEvents {
+  private timer: NodeJS.Timeout | undefined = undefined
   private listeners: Listener[] = []
 
   addListener(listener: Listener) {
@@ -14,8 +15,13 @@ class ServerSentEvents {
     this.listeners.splice(index, 1)
   }
 
-  push(userId: string) {
-    for (const listener of this.listeners) listener(userId)
+  notify() {
+    if (this.timer) return
+
+    this.timer = setTimeout(() => {
+      this.timer = undefined
+      for (const listener of this.listeners) listener()
+    }, 400)
   }
 }
 

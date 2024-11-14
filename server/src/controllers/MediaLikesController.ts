@@ -14,7 +14,7 @@ class MediaController {
     // only set as liked if it is not set
     if (!isMediaLiked) {
       await new MediaLike({ userId: user._id, mediaId: media._id }).save()
-      serverSentEvents.push(user.id)
+      serverSentEvents.notify()
     }
 
     res.json({ isLiked: true })
@@ -31,7 +31,7 @@ class MediaController {
     // only unset if it is set
     if (isMediaLiked) {
       await MediaLike.findByIdAndDelete(mediaLike._id)
-      serverSentEvents.push(user.id)
+      serverSentEvents.notify()
     }
 
     res.json({ isLiked: false })

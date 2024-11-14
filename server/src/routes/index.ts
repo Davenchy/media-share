@@ -22,10 +22,9 @@ router.get("/events", AuthGuard, (req, res) => {
   logger.info(`events: connected: ${user.id}`)
   res.write("data: start\n\n")
 
-  const killHandler = serverSentEvents.addListener(otherUserId => {
-    if (otherUserId === user._id.toHexString()) return
-    res.write("data: update\n\n")
-  })
+  const killHandler = serverSentEvents.addListener(() =>
+    res.write("data: update\n\n"),
+  )
 
   res.on("close", () => {
     logger.info(`events: closed: ${user.id}`)

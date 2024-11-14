@@ -41,7 +41,7 @@ class MediaController {
     })
 
     await media.save()
-    serverSentEvents.push(user.id)
+    serverSentEvents.notify()
 
     res.status(201).json(media.toJSON())
   }
@@ -53,7 +53,7 @@ class MediaController {
     if (!media) throw new Error("Use MediaGuard")
 
     await media.updateOne({ $set: body })
-    serverSentEvents.push(user.id)
+    serverSentEvents.notify()
 
     res.send()
   }
@@ -73,7 +73,7 @@ class MediaController {
     })
 
     await session.endSession()
-    serverSentEvents.push(user.id)
+    serverSentEvents.notify()
 
     res.status(204).send()
   }
