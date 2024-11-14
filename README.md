@@ -1,6 +1,6 @@
 # MediaShare
 
-**MediaShare** is a full-stack web application that allows users to upload, manage, and share media (images). It includes a backend built with TypeScript, a web frontend built with React, and uses Docker to manage the services. The application supports basic user authentication, media upload (images only), and media interaction (like/unlike).
+**MediaShare** is a full-stack web application that allows users to upload, manage, and share media (images/videos). It includes a backend built with TypeScript, a web frontend built with React, and uses Docker to manage the services. The application supports basic user authentication, media upload (images/videos), and media interaction (like/unlike).
 
 ## Live Demo
 
