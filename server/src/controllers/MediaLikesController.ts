@@ -1,4 +1,5 @@
 import { AsyncHandler } from "@/decorators/async_error_handler"
+import serverSentEvents from "@/utils/server-sent-events"
 import type { Request, Response } from "express"
 import MediaLike from "model/media_like"
 
@@ -11,8 +12,10 @@ class MediaController {
     if (isMediaLiked === undefined) throw new Error("Use the FindMediaLike")
 
     // only set as liked if it is not set
-    if (!isMediaLiked)
+    if (!isMediaLiked) {
       await new MediaLike({ userId: user._id, mediaId: media._id }).save()
+      serverSentEvents.push(user.id)
+    }
 
     res.json({ isLiked: true })
   }
@@ -26,7 +29,10 @@ class MediaController {
       throw new Error("Use the FindMediaLike")
 
     // only unset if it is set
-    if (isMediaLiked) await MediaLike.findByIdAndDelete(mediaLike._id)
+    if (isMediaLiked) {
+      await MediaLike.findByIdAndDelete(mediaLike._id)
+      serverSentEvents.push(user.id)
+    }
 
     res.json({ isLiked: false })
   }

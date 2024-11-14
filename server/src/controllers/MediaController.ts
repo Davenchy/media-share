@@ -12,6 +12,7 @@ import {
 import type { Request, Response } from "express"
 import Media, { UpdateMediaSchema } from "model/media"
 import mongoose from "mongoose"
+import serverSentEvents from "@/utils/server-sent-events"
 
 class MediaController {
   @AsyncHandler
@@ -40,29 +41,39 @@ class MediaController {
     })
 
     await media.save()
+    serverSentEvents.push(user.id)
+
     res.status(201).json(media.toJSON())
   }
 
   @AsyncHandler
   async update(req: Request, res: Response) {
-    const { media, body } = req
+    const { user, media, body } = req
+    if (!user) throw new Error("Use AuthGuard")
     if (!media) throw new Error("Use MediaGuard")
+
     await media.updateOne({ $set: body })
+    serverSentEvents.push(user.id)
+
     res.send()
   }
 
   @AsyncHandler
   async delete(req: Request, res: Response) {
-    const media = req.media
+    const { user, media } = req
+    if (!user) throw new Error("Use AuthGuard")
     if (!media) throw new Error("Use MediaGuard")
 
     const session = await mongoose.startSession()
+
     await session.withTransaction(async () => {
       await MediaLike.deleteMany({ mediaId: media._id })
       await unlink(media.filePath)
       await media.deleteOne()
     })
+
     await session.endSession()
+    serverSentEvents.push(user.id)
 
     res.status(204).send()
   }
