@@ -86,7 +86,12 @@ export function RegisterForm({ toggleForm }: { toggleForm: () => void }) {
         <FieldErrorView error={errors.root?.message} />
         <div className="space-y-2">
           <Label htmlFor="username">Username</Label>
-          <Input type="name" id="username" {...register("username")} />
+          <Input
+            type="name"
+            id="username"
+            autoFocus
+            {...register("username")}
+          />
           <FieldErrorView error={errors.username?.message} />
         </div>
         <div className="space-y-2">

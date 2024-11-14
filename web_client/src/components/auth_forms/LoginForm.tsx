@@ -68,7 +68,7 @@ export function LoginForm({ toggleForm }: { toggleForm: () => void }) {
         <FieldErrorView error={errors.root?.message} />
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
-          <Input type="email" id="email" {...register("email")} />
+          <Input type="email" id="email" autoFocus {...register("email")} />
           <FieldErrorView error={errors.email?.message} />
         </div>
         <div className="space-y-2">
