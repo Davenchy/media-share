@@ -1,3 +1,4 @@
+import { Media } from "@/components/media/Media"
 import { MediaCard } from "@/components/media/MediaCard"
 import { MediaSource } from "@/components/media/MediaSource"
 import { useUser } from "@/hooks/use-user"
@@ -30,7 +31,7 @@ export function MediaView({ endpoint }: { endpoint: MediaEndpoint }) {
       {data.map((media: IMedia) => (
         <MediaCard key={media.id} media={media}>
           <MediaSource mediaId={media.id}>
-            {src => <img src={src} alt="testing" />}
+            {src => <Media src={src} mimeType={media.mimeType} />}
           </MediaSource>
         </MediaCard>
       ))}
