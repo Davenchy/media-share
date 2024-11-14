@@ -155,6 +155,7 @@ This webapp communicates with the **MediaShare Backend** API, which is described
 
 - **Login and Registration**: Allows users to authenticate.
 - **Media Upload**: Users can upload images (JPEG, PNG formats) and videos (MP4) to the backend.
+- **Media Upload Progress and Metrics**: Displays the upload progress and metrics.
 - **Media Viewing**: Users can view their own media, liked media, and public media from other users.
 - **Media Likes**: Users can like and unlike media content.
 - **Real-Time Updates**: Allows users to get live updates.
