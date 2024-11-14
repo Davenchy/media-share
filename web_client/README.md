@@ -1,8 +1,8 @@
-# MediaShare Webapp
+# MediaShare WebApp
 
 ## Overview
 
-**MediaShare Webapp** is a front-end application for the **MediaShare** backend, built using **React.js** and **Vite**. The webapp provides an intuitive user interface for media management, including media uploads, likes, and viewing both public and private media.
+**MediaShare WebApp** is a front-end application for the **MediaShare** backend, built using **React.js** and **Vite**. The webapp provides an intuitive user interface for media management, including media uploads, likes, and viewing both public and private media.
 
 It uses modern web technologies to offer a fast and responsive experience, with a focus on clean and reusable components powered by **TailwindCSS** and **Shadcn**.
 
@@ -11,7 +11,7 @@ It uses modern web technologies to offer a fast and responsive experience, with 
 The webapp is structured to interact with the **MediaShare** backend API, allowing users to:
 
 - Register and log in.
-- Upload and manage images.
+- Upload and manage images/videos.
 - Like media content and view personal or public media.
 
 The app is built using the following tools and packages:
@@ -23,10 +23,6 @@ The app is built using the following tools and packages:
 - **Axios**: For making API requests to the backend.
 - **TailwindCSS**: For styling the application.
 - **Shadcn**: For UI components styled with TailwindCSS.
-
-### Supported Media Types
-
-Currently, the webapp only supports image uploads (JPEG, PNG formats) and displays them accordingly.
 
 ## Setup Instructions
 
@@ -155,13 +151,12 @@ This webapp communicates with the **MediaShare Backend** API, which is described
 ### Key Features
 
 - **Login and Registration**: Allows users to authenticate.
-- **Media Upload**: Users can upload images (JPEG, PNG formats) to the backend.
+- **Media Upload**: Users can upload images (JPEG, PNG formats) and videos (MP4) to the backend.
 - **Media Viewing**: Users can view their own media, liked media, and public media from other users.
 - **Media Likes**: Users can like and unlike media content.
 
 ## Additional Notes
 
-- **Image Support**: The webapp currently supports image uploads and viewing, but the backend also supports video and other media types.
 - **Styling**: The webapp uses **TailwindCSS** for responsive and utility-first styling, with pre-built components from **Shadcn**.
 - **Zod Validation**: **Zod** is used for input validation, ensuring that data passed through forms is valid and follows the expected schema.
 - **React Hook Form**: Used for form management, which reduces the need for boilerplate code and simplifies handling form states.
