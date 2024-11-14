@@ -23,7 +23,7 @@ MediaShare utilizes **Server-Sent Events (SSE)** to provide real-time updates to
 - SSE is integrated into the backend at the `/events` endpoint, which is **auth-guarded**.
 - Each client subscribes to `/events` upon login to receive updates.
 - The triggering user does not receive the event themselves, ensuring efficient data handling.
-- The events system is **debounced with a 2-second delay** to reduce server load from frequent updates.
+- The events system is **debounced** to reduce server load from frequent updates.
 
 For detailed instructions on enabling SSE in the backend and frontend, refer to the respective `README` files.
 

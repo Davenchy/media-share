@@ -165,7 +165,7 @@ The MediaShare web app leverages **Server-Sent Events (SSE)** to provide real-ti
 
 - **Automatic Refresh**: When a user action (upload, update, delete, like, or unlike) occurs, the app will refresh the media feed, updating only when other users perform actions.
 - **Connection Setup**: Upon login, the app establishes a connection to `/events` and begins listening for events.
-- **Efficient Load Handling**: Updates are debounced for 2 seconds on the server to prevent excessive reloading during frequent actions.
+- **Efficient Load Handling**: Updates are debounced on the server to prevent excessive reloading during frequent actions.
 
 **Note**: If the user’s access token expires, the SSE connection will need to be re-established after re-authentication. The app automatically handles reconnection when needed.
 

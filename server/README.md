@@ -4,7 +4,7 @@
 
 **MediaShare** is a media-sharing platform backend that allows users to upload, manage, and interact with media content like images and videos. The application supports user authentication, media management (upload, update, delete), and media interaction (likes). The backend is written in **TypeScript** and designed with scalability and modularity in mind.
 
-In addition to media management, the server provides **real-time notifications** using **Server-Sent Events (SSE)**. Clients connected to the `/events` endpoint receive refresh events whenever a user triggers an update, such as a new upload, edit, delete, or like/unlike action. To optimize performance, these notifications are **debounced for 2 seconds** to handle frequent updates efficiently.
+In addition to media management, the server provides **real-time notifications** using **Server-Sent Events (SSE)**. Clients connected to the `/events` endpoint receive refresh events whenever a user triggers an update, such as a new upload, edit, delete, or like/unlike action. To optimize performance, these notifications are **debounced** to handle frequent updates efficiently.
 
 ## Architecture
 
@@ -32,7 +32,7 @@ The backend for MediaShare supports real-time updates through **Server-Sent Even
   - Requires an `Authorization` header with a valid Bearer token.
   - Only users other than the triggering user will receive the event notification, ensuring efficient updates.
   - Actions triggering an event include media uploads, updates, deletions, likes, and unlikes.
-- **Debounced Updates**: Event notifications are **debounced for 2 seconds**, preventing server overload during frequent interactions.
+- **Debounced Updates**: Event notifications are **debounced**, preventing server overload during frequent interactions.
 
 #### How to Enable SSE
 
