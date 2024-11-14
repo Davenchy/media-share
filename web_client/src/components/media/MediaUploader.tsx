@@ -18,10 +18,10 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "ui/drawer"
-import { Input } from "ui/input"
-import { Label } from "ui/label"
-import { Switch } from "ui/switch"
-import { Textarea } from "ui/textarea"
+import { Input } from "../ui/input"
+import { Label } from "../ui/label"
+import { Switch } from "../ui/switch"
+import { Textarea } from "../ui/textarea"
 
 import * as MediaAPI from "@/lib/api/media_api"
 import { useQueryClient } from "@tanstack/react-query"

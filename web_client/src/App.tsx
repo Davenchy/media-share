@@ -1,4 +1,4 @@
-import { MediaUploader } from "./components/MediaUploader"
+import { MediaUploader } from "./components/media/MediaUploader"
 import { Toaster } from "./components/ui/toaster"
 import { useUser } from "./hooks/use-user"
 import { AuthView } from "./views/AuthView"
