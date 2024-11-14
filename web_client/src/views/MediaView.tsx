@@ -1,5 +1,5 @@
-import { MediaSource } from "@/components/MediaSource"
 import { MediaCard } from "@/components/media/MediaCard"
+import { MediaSource } from "@/components/media/MediaSource"
 import { useUser } from "@/hooks/use-user"
 import type { IMedia } from "@/lib/api/api"
 import { useQuery } from "@tanstack/react-query"
