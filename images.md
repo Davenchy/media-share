@@ -74,4 +74,10 @@ state.
 
 The bottom **upload sheet** allows users to upload and share media.
 
-![Upload Bottom Sheet Desktop View](images/Upload-Desktop.png)
+The new media uploader has a progress bar and upload metrices
+
+![New Upload Bottom Sheet Desktop View](images/Upload-New-Desktop.png)
+
+The old one
+
+![Old Upload Bottom Sheet Desktop View](images/Upload-Desktop.png)
