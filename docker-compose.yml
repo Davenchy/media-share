@@ -2,8 +2,10 @@ services:
   database:
     container_name: database
     image: mongodb/mongodb-community-server:7.0-ubi9
-    ports:
-      - "27017:27017"
+    expose:
+      - 27017
+    volumes:
+      - mongodb_data:/data/db
   minly-server:
     # to change container name, you have to rebuild the webapp image with then
     # new server host name
@@ -19,18 +21,17 @@ services:
     restart: on-failure
     depends_on:
       - database
+    volumes:
+      - uploads:/app/uploads
   minly-webapp:
     container_name: minly-webapp
     image: "davenchy/minly-assignment-webapp"
-    build:
-      context: web_client
-      args:
-        # !INFO: Must be the ip address of the backend deployment server
-        HOST_SERVER: 'localhost'
-      tags:
-        - "davenchy/minly-assignment-webapp"
     ports:
-      - '8080:80'
+      - '80:80'
     restart: on-failure
     depends_on:
       - minly-server
+
+volumes:
+  mongodb_data:
+  uploads:
