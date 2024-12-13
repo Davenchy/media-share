@@ -26,7 +26,7 @@ COPY . .
 
 # Set vite environment variables for building run time
 # the server host must be the address of the backend deployment server
-ARG SERVER_HOST="143.244.179.9"
+ARG SERVER_HOST="media-share-server"
 ARG SERVER_PORT="3000"
 ENV VITE_SERVER_HOST=$SERVER_HOST
 ENV VITE_SERVER_PORT=$SERVER_PORT
