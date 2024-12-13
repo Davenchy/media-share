@@ -26,6 +26,12 @@ services:
   webapp:
     container_name: media-share-webapp
     image: "davenchy/media-share-webapp"
+    build:
+      context: web_client
+      args:
+        HOST_SERVER: "media-share-server"
+      tags:
+        - "davenchy/media-share-webapp"
     ports:
       - '80:80'
     restart: on-failure
