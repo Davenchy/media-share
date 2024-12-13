@@ -100,35 +100,45 @@ services:
   database:
     container_name: database
     image: mongodb/mongodb-community-server:7.0-ubi9
-    ports:
-      - "27017:27017"
-  media-share-server:
+    expose:
+      - 27017
+    volumes:
+      - mongodb_data:/data/db
+  server:
+    # to change container name, you have to rebuild the webapp image with then
+    # new server host name
     container_name: media-share-server
     image: davenchy/media-share-server
     ports:
       - "3000:3000"
     environment:
-      SERVER_HOST: "0.0.0.0"
-      SERVER_PORT: "3000"
-      MONGO_HOST: "database"
-      MONGO_PORT: "27017"
+      SERVER_HOST: '0.0.0.0'
+      SERVER_PORT: '3000'
+      MONGO_HOST: 'database'
+      MONGO_PORT: '27017'
     restart: on-failure
     depends_on:
       - database
-  media-share-webapp:
+    volumes:
+      - uploads:/app/uploads
+  webapp:
     container_name: media-share-webapp
     image: "davenchy/media-share-webapp"
     build:
       context: web_client
       args:
-        HOST_SERVER: "localhost"
+        HOST_SERVER: "media-share-server"
       tags:
         - "davenchy/media-share-webapp"
     ports:
-      - "8080:80"
+      - '80:80'
     restart: on-failure
     depends_on:
       - media-share-server
+
+volumes:
+  mongodb_data:
+  uploads:
 ```
 
 ### Mobile App
