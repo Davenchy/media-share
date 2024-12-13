@@ -73,8 +73,8 @@ To run the full application locally using Docker Compose:
 This command will start:
 
 - A **MongoDB** container (`database` service) for data storage.
-- A **backend server** container (`minly-server` service) that serves the API.
-- A **frontend webapp** container (`minly-webapp` service) that runs the React app.
+- A **backend server** container (`media-share-server` service) that serves the API.
+- A **frontend webapp** container (`media-share-webapp` service) that runs the React app.
 
 The webapp will be available at `http://localhost:8080`, and the backend API will be accessible at `http://localhost:3000`.
 
@@ -92,8 +92,8 @@ The webapp will be available at `http://localhost:8080`, and the backend API wil
 The Docker Compose file (`docker-compose.yml`) includes the following services:
 
 - **database**: MongoDB container.
-- **minly-server**: The backend server.
-- **minly-webapp**: The frontend web application.
+- **media-share-server**: The backend server.
+- **media-share-webapp**: The frontend web application.
 
 ```yml
 services:
@@ -102,9 +102,9 @@ services:
     image: mongodb/mongodb-community-server:7.0-ubi9
     ports:
       - "27017:27017"
-  minly-server:
-    container_name: minly-server
-    image: davenchy/minly-assignment-server
+  media-share-server:
+    container_name: media-share-server
+    image: davenchy/media-share-server
     ports:
       - "3000:3000"
     environment:
@@ -115,20 +115,20 @@ services:
     restart: on-failure
     depends_on:
       - database
-  minly-webapp:
-    container_name: minly-webapp
-    image: "davenchy/minly-assignment-webapp"
+  media-share-webapp:
+    container_name: media-share-webapp
+    image: "davenchy/media-share-webapp"
     build:
       context: web_client
       args:
         HOST_SERVER: "localhost"
       tags:
-        - "davenchy/minly-assignment-webapp"
+        - "davenchy/media-share-webapp"
     ports:
       - "8080:80"
     restart: on-failure
     depends_on:
-      - minly-server
+      - media-share-server
 ```
 
 ### Mobile App
